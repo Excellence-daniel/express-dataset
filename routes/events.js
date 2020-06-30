@@ -59,4 +59,44 @@ router.delete('/', function (request, response) {
 	return response.status(200).send('json file deleted');
 });
 
+router.get('/actors/:id', async function (request, response) {
+	const { id } = request.params;
+	let data = new Array();
+	let events = await new Promise((resolve, reject) => {
+		jsonFile.readFile(file, async function (err, obj) {
+			let res = obj;
+			if (res === undefined) {
+				res = [];
+			}
+			resolve(res);
+			if (err) reject(err);
+		});
+	});
+
+	data = events;
+	if (!data.length) {
+		return response.status(200).send('Event list is empty');
+	}
+
+	let actorEvents = [];
+	actorEvents = data.filter((event) => Number(event.actor.id) === Number(id));
+	return response.status(200).send({ actorEvents });
+});
+
+router.get('/', async function (request, response) {
+	let data = new Array();
+	let events = await new Promise((resolve, reject) => {
+		jsonFile.readFile(file, async function (err, obj) {
+			let res = obj;
+			if (res === undefined) {
+				res = [];
+			}
+			resolve(res);
+			if (err) reject(err);
+		});
+	});
+
+	data = events;
+	return response.status(200).send({ data });
+});
 module.exports = router;
