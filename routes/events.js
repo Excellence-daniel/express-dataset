@@ -2,6 +2,7 @@ var express = require('express');
 const jsonFile = require('jsonfile');
 const { response } = require('../app');
 const { resolve, reject } = require('bluebird');
+const { json } = require('body-parser');
 var router = express.Router();
 const file = '/Users/daniel/Documents/projects/express-dataset/data/events.json';
 
@@ -51,6 +52,11 @@ router.post('/', async function (request, response) {
 		}
 		return response.status(201).send('Written event successfully');
 	});
+});
+
+router.delete('/', function (request, response) {
+	jsonFile.writeFileSync(file, []);
+	return response.status(200).send('json file deleted');
 });
 
 module.exports = router;
