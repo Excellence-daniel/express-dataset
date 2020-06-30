@@ -48,7 +48,7 @@ router.post('/', async function (request, response) {
 	jsonFile.writeFile(file, body, function (err) {
 		if (err) {
 			console.log(err);
-			return response.status().send(err);
+			return response.status(500).send(err);
 		}
 		return response.status(201).send('Written event successfully');
 	});
